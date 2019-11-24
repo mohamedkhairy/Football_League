@@ -1,4 +1,4 @@
-package com.example.footballleague.fragment
+package com.example.footballleague.fragment.home
 
 import android.app.Application
 import android.util.Log
@@ -10,6 +10,7 @@ import arrow.core.Either
 import com.example.footballleague.database.entity.CompetitionTeamsData
 import com.example.footballleague.repository.Repository
 import com.example.footballleague.resource.Resource
+import kotlinx.coroutines.Job
 import javax.inject.Inject
 
 class HomeViewModel
@@ -17,7 +18,7 @@ class HomeViewModel
 constructor(private val userRepository: Repository, val app: Application) : AndroidViewModel(app) {
 
 
-//    private val liveComeBackData: MutableLiveData<CompetitionTeamsData> = MutableLiveData()
+    private val jobs: MutableList<Job> = mutableListOf()
 
     private val liveComeBackData: MediatorLiveData<CompetitionTeamsData> = MediatorLiveData()
 
@@ -62,5 +63,10 @@ constructor(private val userRepository: Repository, val app: Application) : Andr
 
 
 
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        jobs.forEach { if (it.isActive) it.cancel() }
     }
 }

@@ -1,22 +1,18 @@
 package com.example.footballleague.di.modules
 
-
 import androidx.lifecycle.ViewModel
 import com.example.footballleague.di.key.ViewModelKey
-import com.example.footballleague.fragment.home.HomeViewModel
 import com.example.footballleague.fragment.team.TeamInfoViewModel
-
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 
 @Module
-abstract class HomeViewModelModule {
+abstract class TeamInfoViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(HomeViewModel::class)
-    abstract fun bindHragmentViewModel(viewModel: HomeViewModel): ViewModel
-
+    @ViewModelKey(TeamInfoViewModel::class)
+    abstract fun bindTeamFragmentViewModel(viewModel: TeamInfoViewModel): ViewModel
 
 }

@@ -1,7 +1,7 @@
 package com.example.footballleague
 
 import android.os.Bundle
-import com.example.footballleague.fragment.HomeFragment
+import com.example.footballleague.fragment.home.HomeFragment
 import dagger.android.support.DaggerAppCompatActivity
 
 class MainActivity : DaggerAppCompatActivity() {

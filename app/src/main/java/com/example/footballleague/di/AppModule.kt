@@ -17,6 +17,7 @@ import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -50,6 +51,12 @@ class AppModule{
             )
         }
 
+    fun loggerInterceptor():Interceptor {
+        val logger =  HttpLoggingInterceptor()
+        logger.level = HttpLoggingInterceptor.Level.BODY
+        return logger
+    }
+
     @Singleton
     @Provides
     internal fun okHttpClientProvides(interceptor: Interceptor): OkHttpClient = OkHttpClient.Builder()
@@ -58,7 +65,10 @@ class AppModule{
             .writeTimeout(5, TimeUnit.SECONDS)
             .retryOnConnectionFailure(false)
             .addInterceptor(interceptor)
+            .addInterceptor(loggerInterceptor())
             .build()
+
+
 
 
 

@@ -41,8 +41,6 @@ abstract class NetworkBoundResource<CacheObject, RequestObject> {
 
         val apiResponse = makeApiCall()
 
-        Log.d("xxxx" ,"bound 222")
-
 
         // update LiveData for loading status
         results.addSource(dbSource) { cacheObject ->
@@ -90,7 +88,6 @@ abstract class NetworkBoundResource<CacheObject, RequestObject> {
                 is ApiResponse.ApiErrorResponse<*> -> {
 
                     results.addSource(dbSource) { cacheObject ->
-                        Log.d("xxxx" , requestObjectApiResponse.errorMessage)
 
                         setValue(Resource.error(
                             (requestObjectApiResponse).errorMessage!!,

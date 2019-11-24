@@ -8,6 +8,7 @@ import com.example.footballleague.di.ViewModelFactoryModule
 import com.example.footballleague.di.modules.EndPointModule
 import com.example.footballleague.di.modules.HomeFragmentModule
 import com.example.footballleague.di.modules.HomeViewModelModule
+import com.example.footballleague.di.modules.TeamInfoViewModelModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -21,7 +22,9 @@ import javax.inject.Singleton
                      AppModule::class,
                      ViewModelFactoryModule::class,
                      EndPointModule::class,
-                     HomeViewModelModule::class])
+                     HomeViewModelModule::class,
+                     TeamInfoViewModelModule::class
+])
 
 interface AppComponent : AndroidInjector<BaseApplication> {
 

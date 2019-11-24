@@ -17,7 +17,6 @@ open class ApiResponse<T> {
     fun create(response: Response<T>): ApiResponse<T> {
 
         if (response.isSuccessful) {
-            Log.d("xxxx" ,"s00")
 
             val body = response.body()
 
