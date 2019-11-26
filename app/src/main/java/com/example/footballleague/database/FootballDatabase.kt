@@ -4,10 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import com.example.footballleague.converter.TeamConverter
 import com.example.footballleague.database.dao.Dao
-import com.example.footballleague.database.entity.CompetitionTeamsData
 import com.example.footballleague.database.entity.Favorites
 import com.example.footballleague.database.entity.Team
 

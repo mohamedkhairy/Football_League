@@ -23,13 +23,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 @Module
-class AppModule{
+class AppModule {
 
     //////////////// database provides ///////////////
 
     @Singleton
     @Provides
-    internal fun databseInstance(app: Application):FootballDatabase =
+    internal fun databseInstance(app: Application): FootballDatabase =
         FootballDatabase.getInstance(app)
 
     @Singleton
@@ -51,15 +51,16 @@ class AppModule{
             )
         }
 
-    fun loggerInterceptor():Interceptor {
-        val logger =  HttpLoggingInterceptor()
+    fun loggerInterceptor(): Interceptor {
+        val logger = HttpLoggingInterceptor()
         logger.level = HttpLoggingInterceptor.Level.BODY
         return logger
     }
 
     @Singleton
     @Provides
-    internal fun okHttpClientProvides(interceptor: Interceptor): OkHttpClient = OkHttpClient.Builder()
+    internal fun okHttpClientProvides(interceptor: Interceptor): OkHttpClient =
+        OkHttpClient.Builder()
             .connectTimeout(10, TimeUnit.SECONDS)
             .readTimeout(5, TimeUnit.SECONDS)
             .writeTimeout(5, TimeUnit.SECONDS)
@@ -69,17 +70,14 @@ class AppModule{
             .build()
 
 
-
-
-
     @Singleton
     @Provides
     internal fun provideRetrofitInstance(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(okHttpClient)
-            .addCallAdapterFactory(LiveDataCallAdapterFactory())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        .baseUrl(BASE_URL)
+        .client(okHttpClient)
+        .addCallAdapterFactory(LiveDataCallAdapterFactory())
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
 
 
 }

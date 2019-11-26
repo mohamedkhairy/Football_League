@@ -4,7 +4,6 @@ package com.example.footballleague.di.modules
 import androidx.lifecycle.ViewModel
 import com.example.footballleague.di.key.ViewModelKey
 import com.example.footballleague.fragment.home.HomeViewModel
-import com.example.footballleague.fragment.team.TeamInfoViewModel
 
 import dagger.Binds
 import dagger.Module

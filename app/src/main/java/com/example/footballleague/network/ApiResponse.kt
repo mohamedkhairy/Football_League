@@ -1,11 +1,9 @@
 package com.example.footballleague.network
 
 
-import android.util.Log
 import java.io.IOException
 
 import retrofit2.Response
-
 
 
 open class ApiResponse<T> {
@@ -22,17 +20,12 @@ open class ApiResponse<T> {
 
             return if (body == null || response.code() == 204) { // 204 is empty response
 
-                Log.d("xxxx" ,"body null")
-
                 ApiEmptyResponse()
             } else {
-                Log.d("xxxx" ,"body")
 
                 ApiSuccessResponse(body)
             }
         } else {
-
-            Log.d("xxxx" ,"error")
 
             var errorMsg = "No Response"
             try {
@@ -51,14 +44,15 @@ open class ApiResponse<T> {
      *
      * @param <T>
     </T> */
-     data class ApiSuccessResponse<T> internal constructor(val body: T) : ApiResponse<T>()
+    data class ApiSuccessResponse<T> internal constructor(val body: T) : ApiResponse<T>()
 
     /**
      * Generic Error response from API
      *
      * @param <T>
     </T> */
-    data class ApiErrorResponse<T> internal constructor(val errorMessage: String?) : ApiResponse<T>()
+    data class ApiErrorResponse<T> internal constructor(val errorMessage: String?) :
+        ApiResponse<T>()
 
 
     /**

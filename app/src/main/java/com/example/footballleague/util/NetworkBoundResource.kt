@@ -1,6 +1,5 @@
 package com.example.footballleague.util
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.example.footballleague.network.ApiResponse
@@ -18,19 +17,22 @@ abstract class NetworkBoundResource<CacheObject, RequestObject> {
 
 
         results.addSource(dbSource) { data ->
-
             results.removeSource(dbSource)
-
-
             if (shouldFetch(data)) {
-
                 // get data from the network
                 fetchFromNetwork(dbSource)
             } else {
-                results.addSource(dbSource) { cacheObject1 -> setValue(Resource.success(cacheObject1, job)) }
+
+                results.addSource(dbSource) { cacheObject1 ->
+                    setValue(
+                        Resource.success(
+                            cacheObject1,
+                            job,
+                            false
+                        )
+                    )
+                }
             }
-
-
         }
 
     }
@@ -44,7 +46,7 @@ abstract class NetworkBoundResource<CacheObject, RequestObject> {
 
         // update LiveData for loading status
         results.addSource(dbSource) { cacheObject ->
-            setValue(Resource.loading(cacheObject))
+            setValue(Resource.loading(cacheObject, true))
         }
 
 
@@ -69,7 +71,7 @@ abstract class NetworkBoundResource<CacheObject, RequestObject> {
                         saveCallResult(processResponse(requestObjectApiResponse) as RequestObject)
                         withContext(Dispatchers.Main) {
                             results.addSource<CacheObject>(loadFromDb()) { cacheObject ->
-                                setValue(Resource.success(cacheObject, job))
+                                setValue(Resource.success(cacheObject, job, true))
                             }
                         }
                     }
@@ -79,7 +81,7 @@ abstract class NetworkBoundResource<CacheObject, RequestObject> {
                 is ApiResponse.ApiEmptyResponse<*> -> {
                     job += GlobalScope.launch(Dispatchers.Main) {
                         results.addSource<CacheObject>(loadFromDb()) { cacheObject ->
-                            setValue(Resource.success(cacheObject, job))
+                            setValue(Resource.success(cacheObject, job, false))
                         }
                     }
                 }
@@ -89,11 +91,10 @@ abstract class NetworkBoundResource<CacheObject, RequestObject> {
 
                     results.addSource(dbSource) { cacheObject ->
 
-                        setValue(Resource.error(
-                            (requestObjectApiResponse).errorMessage!!,
-                            cacheObject,
-                            job
-                        )
+                        setValue(
+                            Resource.error(
+                                (requestObjectApiResponse).errorMessage!!, cacheObject, job, false
+                            )
                         )
                     }
                 }

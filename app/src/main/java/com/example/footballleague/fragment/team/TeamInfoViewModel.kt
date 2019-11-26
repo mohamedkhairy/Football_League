@@ -1,34 +1,38 @@
 package com.example.footballleague.fragment.team
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.footballleague.database.entity.TeamInfoModel
 import com.example.footballleague.network.ApiResponse
 import com.example.footballleague.network.EndPoints
-import com.example.footballleague.repository.Repository
-import com.example.footballleague.resource.Resource
-import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class TeamInfoViewModel
-    @Inject
-    constructor(val endPoints: EndPoints, val app: Application) : AndroidViewModel(app) {
+@Inject
+constructor(val endPoints: EndPoints, val app: Application) : AndroidViewModel(app) {
 
-
-    private val jobs: MutableList<Job> = mutableListOf()
 
     val mediatorTeaminfo: MediatorLiveData<TeamInfoModel> = MediatorLiveData()
 
+    private val liveError: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun getLiveTeamInfo():LiveData<TeamInfoModel> = mediatorTeaminfo
+    private val liveLoading: MutableLiveData<Boolean> = MutableLiveData()
+
+
+    fun getError(): LiveData<Boolean> = liveError
+
+    fun getLoading(): LiveData<Boolean> = liveLoading
+
+    fun getLiveTeamInfo(): LiveData<TeamInfoModel> = mediatorTeaminfo
 
     fun getTeamInfo(id: Int) {
 
-        val backData = endPoints.getTeamInfo(id.toString())
+        liveLoading.value = true
 
+        val backData = endPoints.getTeamInfo(id.toString())
 
         mediatorTeaminfo.addSource(backData) { requestObjectApiResponse ->
             mediatorTeaminfo.removeSource(backData)
@@ -37,31 +41,19 @@ class TeamInfoViewModel
             when (requestObjectApiResponse) {
                 is ApiResponse.ApiSuccessResponse<*> -> {
 
-//                    job += GlobalScope.launch(Dispatchers.Main) {
-//
-//                        }
-
                     val data = processResponse(requestObjectApiResponse)
-                    mediatorTeaminfo.value  = data
-
+                    mediatorTeaminfo.value = data
+                    liveLoading.value = false
                 }
-
 
                 is ApiResponse.ApiEmptyResponse<*> -> {
-//                    job += GlobalScope.launch(Dispatchers.Main) {
-//
-//                    }
-
-                    Log.d("xxxx" , "empty")
-
+                    liveLoading.value = false
+                    liveError.value = true
                 }
 
-
                 is ApiResponse.ApiErrorResponse<*> -> {
-
-                    Log.d("xxxx" , requestObjectApiResponse.errorMessage!!)
-
-
+                    liveLoading.value = false
+                    liveError.value = true
                 }
             }
 

@@ -6,7 +6,6 @@ import com.example.footballleague.di.ActivityBuilderModule
 import com.example.footballleague.di.AppModule
 import com.example.footballleague.di.ViewModelFactoryModule
 import com.example.footballleague.di.modules.EndPointModule
-import com.example.footballleague.di.modules.HomeFragmentModule
 import com.example.footballleague.di.modules.HomeViewModelModule
 import com.example.footballleague.di.modules.TeamInfoViewModelModule
 import dagger.BindsInstance

@@ -1,6 +1,8 @@
 package com.example.footballleague.repository
 
-import android.util.Log
+import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
 import androidx.lifecycle.LiveData
 import com.example.footballleague.database.dao.Dao
 import com.example.footballleague.database.entity.CompetitionTeamsData
@@ -14,14 +16,19 @@ import javax.inject.Inject
 
 class Repository
 @Inject
-constructor(val dao: Dao, val endPoints: EndPoints) {
+constructor(val dao: Dao, val endPoints: EndPoints, val application: Application) {
 
 
     fun getFootballteamsData(): LiveData<Resource<List<Team>>> {
+
         return object : NetworkBoundResource<List<Team>, CompetitionTeamsData>() {
 
             override fun shouldFetch(data: List<Team>?): Boolean {
-                return true
+
+                if (isNetworkAvailable()) {
+                    return true
+                } else
+                    return false
             }
 
             override fun makeApiCall(): LiveData<ApiResponse<CompetitionTeamsData?>> {
@@ -38,7 +45,6 @@ constructor(val dao: Dao, val endPoints: EndPoints) {
 
                 val savedId = dao.getFavoritesId()
                 savedId?.forEach { id ->
-                    Log.d("xxxxid", id.toString())
                     dao.updateFav(true, id)
                 }
 
@@ -46,25 +52,25 @@ constructor(val dao: Dao, val endPoints: EndPoints) {
             }
 
 
-
         }.asLiveData()
     }
 
 
-
-
-    fun getFavoritesId(): List<Int>? = dao.getFavoritesId()
+    private fun isNetworkAvailable(): Boolean {
+        val cm = application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        return cm.activeNetworkInfo != null
+    }
 
     fun getFavoritesData(): LiveData<List<Favorites>?> = dao.getSavedFavorites()
 
-    fun insertFavorites(favoritesTeam: Favorites){
+    fun insertFavorites(favoritesTeam: Favorites) {
         dao.insertFavorites(favoritesTeam)
         dao.updateFav(true, favoritesTeam.id)
     }
 
-    fun deleteFavorite (id: Int) {
+    fun deleteFavorite(id: Int) {
         dao.deleteTeam(id)
-        dao.updateFav(false , id)
+        dao.updateFav(false, id)
     }
 
 

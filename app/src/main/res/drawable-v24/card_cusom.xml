@@ -15,7 +15,7 @@
             <!-- CONTENT LAYER -->
             <item android:bottom="5dp" android:right="5dp">
                 <shape>
-                    <solid android:color="#373737" />
+                    <solid android:color="#A5A2A2" />
                     <corners android:radius="30dip" />
                 </shape>
             </item>
