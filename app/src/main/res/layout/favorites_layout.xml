@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E9D6CE"
-    android:id="@+id/home_frame">
+    android:id="@+id/fav_frame">
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/home_recyclerview"/>
+        android:id="@+id/fav_recyclerview"/>
 
     <FrameLayout
-        android:id="@+id/homeloading"
+        android:id="@+id/favloading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#8b000000"

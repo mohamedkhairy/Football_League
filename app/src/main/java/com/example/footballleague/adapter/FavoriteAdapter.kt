@@ -3,14 +3,12 @@ package com.example.footballleague.adapter
 import android.content.Context
 import android.graphics.drawable.PictureDrawable
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
@@ -20,13 +18,11 @@ import com.example.footballleague.database.entity.Team
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 import kotlinx.android.synthetic.main.home_taem_item.view.*
 
-class HomeViewAdapter (val context: Context,
-                       var teamList: MutableList<Team>,
-                       val clickListener: (Int) -> Unit,
-                       val homefavoritesListener: (Team,Boolean) -> Unit) :
+class FavoriteAdapter (val context: Context, var favList: MutableList<Favorites>, val clickListener: (Int) -> Unit, val favoritesListener: (Int, Boolean) -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+
 
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.home_taem_item, parent, false)
@@ -35,57 +31,26 @@ class HomeViewAdapter (val context: Context,
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
+         (holder as CardViewHolder).bindFav(context, favList[position], clickListener, favoritesListener)
 
-
-
-
-//        if (checkType<List<Team>>(teamList)){teamList
-//            val tl = teamList as List<Team>
-            (holder as CardViewHolder).bindHome(context, teamList[position],position, clickListener, homefavoritesListener)
-
-
-//        }else{
-//
-//            val tl = teamList as List<Favorites>
-//            (holder as CardViewHolder).bindFav(context, tl[position], clickListener, favoritesListener)
-//        }
     }
 
-    override fun getItemCount() = teamList.size
+    override fun getItemCount() = favList.size
 
-//    inline fun <reified T> checkType(value: List<comeList>): Boolean{
-//        return  value is T
-//    }
 
     class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        init {
+
+        fun bindFav(context: Context, fav: Favorites, clickListener: (Int) -> Unit, favoritesListener: (Int,Boolean) -> Unit) {
             this.setIsRecyclable(false)
-        }
-
-
-        fun bindHome (context: Context, team: Team,position: Int, clickListener: (Int) -> Unit, homefavoritesListener: (Team,Boolean) -> Unit) {
-            val imageUrl = team.crestUrl
-            itemView.team_name.text = team.shortName
-            itemView.web_site.text = team.website
+            val imageUrl = fav.image
+            itemView.team_name.text = fav.teamName
+            itemView.web_site.text = fav.webSite
             setSvgTeamImage(context , imageUrl)
-            setCheckBox(team)
 
-            itemView.setOnClickListener { clickListener(team.id)}
-            itemView.save_CheckBox.tag = position
-            itemView.save_CheckBox.setOnClickListener {
-                if (itemView.save_CheckBox.isChecked)
-                homefavoritesListener(team,true)
-                else
-                    homefavoritesListener(team , false)
-            }
-            itemView.web_site.setOnClickListener { openTeamWebSite(team.website!! , context) }
-        }
-
-        private fun setCheckBox(team: Team){
-
-            itemView.save_CheckBox.isChecked = team.isFavorites
-
+            itemView.setOnClickListener { clickListener(fav.id)}
+            itemView.save_CheckBox.setOnCheckedChangeListener { buttonView, isChecked -> favoritesListener(fav.id,isChecked)}
+            itemView.web_site.setOnClickListener { openTeamWebSite(fav.webSite!! , context) }
         }
 
         private fun openTeamWebSite(link: String, context: Context){
@@ -96,7 +61,7 @@ class HomeViewAdapter (val context: Context,
 
         }
 
-        private fun setSvgTeamImage(context: Context , teamImage: String?){
+        private fun setSvgTeamImage(context: Context, teamImage: String?){
             val requestBuilder: RequestBuilder<PictureDrawable> = GlideToVectorYou
                 .init()
                 .with(context)

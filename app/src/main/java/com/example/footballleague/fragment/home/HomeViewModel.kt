@@ -8,6 +8,8 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import arrow.core.Either
 import com.example.footballleague.database.entity.CompetitionTeamsData
+import com.example.footballleague.database.entity.Favorites
+import com.example.footballleague.database.entity.Team
 import com.example.footballleague.repository.Repository
 import com.example.footballleague.resource.Resource
 import kotlinx.coroutines.Job
@@ -20,14 +22,17 @@ constructor(private val userRepository: Repository, val app: Application) : Andr
 
     private val jobs: MutableList<Job> = mutableListOf()
 
-    private val liveComeBackData: MediatorLiveData<CompetitionTeamsData> = MediatorLiveData()
+    private val liveComeBackData: MediatorLiveData<List<Team>> = MediatorLiveData()
 
     private val liveLoading: MutableLiveData<Boolean> = MutableLiveData()
+
+    private val liveFavorites: MutableLiveData<List<Int>?> = MutableLiveData()
 
 
     fun getLoading(): LiveData<Boolean> = liveLoading
 
-    fun getTeamsData():LiveData<CompetitionTeamsData> = liveComeBackData
+    fun getTeamsData():LiveData<List<Team>> = liveComeBackData
+
 
 
     fun getFootballTeams(){
@@ -43,6 +48,8 @@ constructor(private val userRepository: Repository, val app: Application) : Andr
                 Resource.AuthStatus.SUCCESS -> {
                     Log.d("xxxx" ,"SUCCESS")
                     liveComeBackData.value = resource.data
+                    liveLoading.value = false
+
                 }
 
                 Resource.AuthStatus.LOADING -> {
@@ -55,6 +62,8 @@ constructor(private val userRepository: Repository, val app: Application) : Andr
                     Log.d("xxxx" ,"ERROR")
 
                     liveComeBackData.value = resource.data
+                    liveLoading.value = false
+
                 }
 
 
@@ -64,6 +73,23 @@ constructor(private val userRepository: Repository, val app: Application) : Andr
 
 
     }
+
+//    fun liveFavoritesId(): LiveData<List<Int>?> {
+//        liveFavorites.value = userRepository.getFavoritesId()
+//        return liveFavorites
+//    }
+
+    fun getLiveFavorites():LiveData<List<Favorites>?> = userRepository.getFavoritesData()
+
+    fun insertFavorites(favoritesTeam: Favorites){
+        userRepository.insertFavorites(favoritesTeam)
+    }
+
+    fun deleteFavorite (id: Int) {
+        userRepository.deleteFavorite(id)
+    }
+
+
 
     override fun onCleared() {
         super.onCleared()

@@ -8,9 +8,11 @@ import androidx.room.TypeConverters
 import com.example.footballleague.converter.TeamConverter
 import com.example.footballleague.database.dao.Dao
 import com.example.footballleague.database.entity.CompetitionTeamsData
+import com.example.footballleague.database.entity.Favorites
+import com.example.footballleague.database.entity.Team
 
-@Database(entities = [CompetitionTeamsData::class], version = 1)
-@TypeConverters(value = [(TeamConverter::class)])
+@Database(entities = [Team::class , Favorites::class], version = 1)
+//@TypeConverters(value = [(TeamConverter::class)])
 abstract class FootballDatabase: RoomDatabase() {
 
     abstract fun footballDao(): Dao

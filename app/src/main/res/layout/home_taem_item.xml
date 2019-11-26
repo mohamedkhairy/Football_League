@@ -2,57 +2,99 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="#F8F6F6"
     android:layout_margin="8dp"
+    android:orientation="vertical"
+    app:cardBackgroundColor="#F8F6F6"
     app:cardCornerRadius="5dp">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="center">
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/team_image"
+                android:layout_width="wrap_content"
+                android:layout_height="130dp"
+                android:layout_centerHorizontal="true"
+                android:padding="5dp"
+                tools:src="@tools:sample/backgrounds/scenic" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/team_image"
+                android:background="@drawable/custom_drawable"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/team_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:paddingStart="8dp"
+                    android:text="man city"
+                    android:textColor="#fff" />
+
+                <CheckBox
+                    android:id="@+id/save_CheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="8dp"
+                    android:button="@drawable/checkbox"
+                    android:scaleType="fitXY" />
 
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="140dp"
-            android:padding="5dp"
-            android:id="@+id/team_image"
-            android:layout_centerHorizontal="true"
-            tools:src="@tools:sample/backgrounds/scenic" />
+            </RelativeLayout>
 
+        </RelativeLayout>
 
         <LinearLayout
-            android:layout_below="@+id/team_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignParentStart="true"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="man city"
-            android:id="@+id/team_name"
-            android:paddingBottom="4dp"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"/>
+            <TextView
+                android:id="@+id/team_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:paddingBottom="3dp"
+                android:textSize="12sp"
+                android:text="Red" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1999"
-            android:id="@+id/founded_date"
-            android:paddingBottom="4dp"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"/>
+            <TextView
+                android:id="@+id/address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:paddingBottom="3dp"
+                android:textSize="12sp"
+                android:text="man city" />
+
+            <TextView
+                android:id="@+id/web_site"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:paddingBottom="3dp"
+                android:textSize="12sp"
+                android:text="1999" />
 
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>
